@@ -5,6 +5,7 @@ from models.user_model import User
 router = APIRouter()
 
 nuevo_usuario = UserController()
+user_controller = UserController()
 
 
 @router.post("/create_user")
@@ -37,3 +38,8 @@ async def delete_user(user_id: int):
 async def login(email: str = Form(...), password: str = Form(...)):
     user_data = nuevo_usuario.authenticate_user(email, password)
     return user_data
+
+@router.get("/count_users")
+async def count_users():
+    count = user_controller.get_user_count()
+    return {"count": count}

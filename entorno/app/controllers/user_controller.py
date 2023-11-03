@@ -95,7 +95,7 @@ class UserController:
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("""UPDATE usuarios 
+            cursor.execute("""UPDATE usuarios
                            SET nombre = %s,
                            apellido = %s,
                            correo = %s,
@@ -152,5 +152,18 @@ class UserController:
             raise HTTPException(status_code=500, detail="Error de servidor")
         finally:
             conn.close()
+
+    def get_user_count(self):
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM usuarios")
+            count = cursor.fetchone()[0]
+            conn.close()
+            return count
+        except mysql.connector.Error as err:
+            # Manejar errores de la base de datos
+            print(err)
+            return 0
 
 ##user_controller = UserController()
